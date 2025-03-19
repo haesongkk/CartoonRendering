@@ -1,0 +1,23 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.4.33110.190
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "CartoonRendering", "CartoonRendering\CartoonRendering.pyproj", "{6F780914-8037-45F0-BC68-E117ACC0663A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6F780914-8037-45F0-BC68-E117ACC0663A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6F780914-8037-45F0-BC68-E117ACC0663A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {A64EDDC4-73F8-4907-B093-EDB0A5F9A9B0}
+	EndGlobalSection
+EndGlobal
