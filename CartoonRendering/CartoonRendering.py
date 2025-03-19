@@ -1,33 +1,54 @@
-import cv2
+ï»¿import cv2
+import os
+import glob
 
-# À±°û¼± °ËÃâ
-def DetectEdges(image):
+inputfoldername = "./input"
+outputfoldername = "./output"
+inputextensions = ["*.jpg", "*.png", "*.jpeg"]
+outputprefix = "cr_"
 
-    # BGR ÀÌ¹ÌÁö(¼¼ °³ÀÇ Ã¤³Î)¸¦ GRAY ÀÌ¹ÌÁö(´ÜÀÏÃ¤³Î)·Î º¯È¯ÇÑ´Ù
-    gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-
-    # ºÒÇÊ¿äÇÑ ³ëÀÌÁî¸¦ ÁÙÀÌ±â À§ÇØ median blur Àû¿ë
+# ìœ¤ê³½ì„  ê²€ì¶œ
+def DetectEdges(_image):
+    gray = cv2.cvtColor(_image, cv2.COLOR_BGR2GRAY)
     gray = cv2.medianBlur(gray, 5)
-    
     return cv2.adaptiveThreshold(gray, 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY, 9, 9)
 
+# bilateral filterë¥¼ ì ìš©í•˜ì—¬ ìœ¤ê³½ì„ ì„ ë³´ì¡´í•˜ë©° ì´ë¯¸ì§€ë¥¼ ë¶€ë“œëŸ½ê²Œ ë§Œë“ ë‹¤
+def BlurImage(_image):
+    return cv2.bilateralFilter(_image, 9, 300, 300)
 
-# bilateral filter¸¦ Àû¿ëÇÏ¿© À±°û¼±À» º¸Á¸ÇÏ¸ç ÀÌ¹ÌÁö¸¦ ºÎµå·´°Ô ¸¸µç´Ù
-def BlurImgae(image):
-    return cv2.bilateralFilter(img, 9, 300, 300)
+# í´ë” ë‚´ íŠ¹ì • í™•ì¥ìë¥¼ ê°€ì§„ íŒŒì¼ ê²½ë¡œë“¤ì„ ë°˜í™˜í•œë‹¤
+def LoadPaths(_folderName, _extensions):
+    vImgPath = []
+    for ext in _extensions:
+        vImgPath.extend(glob.glob(os.path.join(_folderName, ext)))
+    return vImgPath 
 
+# ìœ¤ê³½ì„ ê³¼ ê°€ê³µëœ ì´ë¯¸ì§€ë¥¼ í•©ì¹œë‹¤
+def ProcessImage(_image):
+    edges = DetectEdges(_image)
+    blurred = BlurImage(_image)
+    return cv2.bitwise_and(blurred, blurred, mask=edges)
 
-# ÀÌ¹ÌÁö ºÒ·¯¿À±â
-img = cv2.imread('image.jpg')
+# main 
 
-edges = DetectEdges(img)
-blured = BlurImgae(img)
+# ì´ë¯¸ì§€ íŒŒì¼ (ê²½ë¡œ) ë¶ˆëŸ¬ì˜¤ê¸°
+vImgPath = LoadPaths(inputfoldername, inputextensions)
 
-# Ã³¸®µÈ ÀÌ¹ÌÁö¿Í À±°û¼±À» ÇÕÄ£´Ù
-output = cv2.bitwise_and(blured, blured, mask=edges)
+for imgPath in vImgPath:
 
-# Display the cartoon image
-cv2.imshow("CartoonRendering", output)
+    # ì´ë¯¸ì§€ ë¶ˆëŸ¬ì˜¤ê¸°
+    image = cv2.imread(imgPath)
+
+    # ì´ë¯¸ì§€ ê°€ê³µ
+    output = ProcessImage(image)
+
+    #ì´ë¯¸ì§€ ì €ì¥
+    imgName = os.path.basename(imgPath) 
+    outPath = os.path.join(outputfoldername, f"{outputprefix}{imgName}")
+    cv2.imwrite(outPath, output)
+
+# í”„ë¡œê·¸ë¨ ì¢…ë£Œ
+print(f"ì‘ì—…ì´ ì™„ë£Œë˜ì—ˆìŠµë‹ˆë‹¤. output í´ë”ë¥¼ í™•ì¸í•˜ì„¸ìš”.")
 cv2.waitKey(0)
 cv2.destroyAllWindows()
-
