@@ -6,7 +6,13 @@
 이 필터는 이미지의 윤곽선을 강조하고 색상을 단순화하여 만화 스타일의 효과를 부여한다. 
 본 보고서에서는 서로 다른 카테고리의 이미지를 변환한 후 그 결과를 평가한다.
 
-이미지 출처 :  **Pixabay** (https://pixabay.com/ko/)
+### 개발 환경
+- Language: Python 3.13
+- Libraries: OpenCV, NumPy
+- Platform: Windows (Developed & Tested) / macOS / Linux
+
+### 리소스 출처
+**Pixabay** (https://pixabay.com/ko/)
 
 ---
 
