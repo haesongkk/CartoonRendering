@@ -6,6 +6,7 @@ inputfoldername = "./input"
 outputfoldername = "./output"
 inputextensions = ["*.jpg", "*.png", "*.jpeg"]
 outputprefix = "cr_"
+endmessage = f"작업이 완료되었습니다. output 폴더를 확인하세요."
 
 # 윤곽선 검출
 def DetectEdges(_image):
@@ -17,18 +18,18 @@ def DetectEdges(_image):
 def BlurImage(_image):
     return cv2.bilateralFilter(_image, 9, 300, 300)
 
+# 윤곽선과 가공된 이미지를 합친다
+def ProcessImage(_image):
+    edges = DetectEdges(_image)
+    blurred = BlurImage(_image)
+    return cv2.bitwise_and(blurred, blurred, mask=edges)
+
 # 폴더 내 특정 확장자를 가진 파일 경로들을 반환한다
 def LoadPaths(_folderName, _extensions):
     vImgPath = []
     for ext in _extensions:
         vImgPath.extend(glob.glob(os.path.join(_folderName, ext)))
     return vImgPath 
-
-# 윤곽선과 가공된 이미지를 합친다
-def ProcessImage(_image):
-    edges = DetectEdges(_image)
-    blurred = BlurImage(_image)
-    return cv2.bitwise_and(blurred, blurred, mask=edges)
 
 # main 
 
@@ -49,6 +50,6 @@ for imgPath in vImgPath:
     cv2.imwrite(outPath, output)
 
 # 프로그램 종료
-print(f"작업이 완료되었습니다. output 폴더를 확인하세요.")
+print(endmessage)
 cv2.waitKey(0)
 cv2.destroyAllWindows()
